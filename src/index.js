@@ -1,14 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+
+// Router
+import { Router, Route, browserHistory, IndexRoute} from 'react-router';
+
+// Container Components 
+import { App, Home, Login, Register, Upload, SelectCategory } from 'containers';
+
+// Redux
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware } from 'redux';
+import reducers from 'reducers';
+import thunk from 'redux-thunk'; // dispatcher가 action createor가 만든 action 객체 외에도, 만든 함수도 처리가능
+
+
 import * as serviceWorker from './serviceWorker';
 
+const store = createStore(reducers, applyMiddleware(thunk));
+const rootElement = document.getElementById('root');
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route path="/" component={App}>
+        <IndexRoute component={Home} />
+        <Route path="home" component={Home}/>
+        <Route path="login" component={Login}/>
+        <Route path="register" component={Register} />
+        <Route path="upload" component={Upload} />
+      </Route>
+    </Router>
+  </Provider>, rootElement
 );
 
 // If you want your app to work offline and load faster, you can change
