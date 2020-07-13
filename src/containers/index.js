@@ -3,6 +3,6 @@ import Home from './Home';
 import Login from './Login';
 import Register from './Register';
 import Upload from './Upload';
-import SelectCategory from './SelectCategory';
+import Label from './Label';
 
-export { App, Home, Login, Register, Upload, SelectCategory };
+export { App, Home, Login, Register, Upload, Label };
