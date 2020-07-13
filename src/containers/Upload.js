@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { uploadItemRequest } from 'actions/uploaditem';
 import { connect } from 'react-redux';
 import UploadItem from 'components/UploadItem';
+import { browserHistory } from 'react-router';
 
 class Upload extends Component {
     constructor(props){
@@ -9,34 +10,35 @@ class Upload extends Component {
         this.handleItem = this.handleItem.bind(this);
     }
 
-    handleItem(text) {
-        return this.props.uploadItemRequest(text).then(
+    handleItem(file) {
+        return this.props.uploadItemRequest(file).then(
             () => {
-                if(this.props.itemStatus.status === "SUCCESS") {
-                    Materialize.toast("SUCCESS!", 2000);
+                if(this.props.status === "SUCCESS") {
+                    Materialize.toast("업로드 완료! 분류작업을 해주세요.", 2000);
+                    browserHistory.push('/login'); // TODO: /label 
                 } else {
                     /*
                         ERROR CODES
                             1: NOT LOGGED IN
-                            2: EMPTY CONTENTS
+                            2: EMPTY FILES
                     */
+                   let errorMessage = [
+                       '로그인 후 이용해주세요!',
+                       '파일을 선택해주세요!'
+                   ]
                    let $toastContent;
-                   switch(this.props.postStatus.error) {
+                   switch(this.props.errorCode){
                        case 1:
-                           // IF NOT LOGGED IN, NOTIFY AND REFRESH AFTER
-                           $toastContent = $('<span style="color: #FFB4BA">You are not logged in</span>');
+                           $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[0] + '</span>');
                            Materialize.toast($toastContent, 2000);
-                           setTimeout(()=> {location.reload(false);}, 2000);
+                           browserHistory.push('/login');
                            break;
-                       case 2:
-                           $toastContent = $('<span style="color: #FFB4BA">Please write something</span>');
-                           Materialize.toast($toastContent, 2000);
-                           break;
-                       default:
-                           $toastContent = $('<span style="color: #FFB4BA">Something Broke</span>');
-                           Materialize.toast($toastContent, 2000);
-                           break;
-                   }
+                        case 2:
+                            $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[1] + '</span>');
+                            Materialize.toast($toastContent, 2000);
+                            break;
+
+                   } 
                 }
             }
         )
@@ -55,14 +57,15 @@ class Upload extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        itemStatus: state.uploaditem.item.status
+        status: state.uploaditem.item.status,
+        errorCode: state.uploaditem.item.error
     };
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        uploadItemRequest: (text) => {
-            return dispatch(uploadItemRequest(text));
+        uploadItemRequest: (files) => {
+            return dispatch(uploadItemRequest(files));
         }
     };
 };

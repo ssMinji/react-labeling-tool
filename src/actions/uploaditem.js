@@ -1,30 +1,21 @@
 import {
     UPLOAD_ITEM, 
     UPLOAD_SUCCESS,
-    UPLOAD_FAILURE,
-    SELECT_CATEGORY
+    UPLOAD_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
-/* SELECT CATEGORY */
-export function selectCategory(category) {
-    return {
-        type: SELECT_CATEGORY,
-        category
-    };
-}
-
 
 /* UPLOAD ITEM */
-export function uploadItemRequest(text) {
+export function uploadItemRequest(files) {
     return (dispatch) => {
         dispatch(uploadItem());
 
-        return axios.post('/api/upload', { text })
+        return axios.post('/api/upload', { files })
             .then((response) => {
                 dispatch(uploadSuccess());
             }).catch((error) => {
-                dispatch(uploadFailure());
+                dispatch(uploadFailure(error.response.data.code));
             })
     }
 }
@@ -41,8 +32,9 @@ export function uploadSuccess() {
     };
 }
 
-export function uploadFailure() {
+export function uploadFailure(error) {
     return {
-        type: UPLOAD_FAILURE
+        type: UPLOAD_FAILURE,
+        error
     };
 }

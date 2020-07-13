@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
     root: {
@@ -15,123 +11,131 @@ const styles = theme => ({
         maxHeight: 300
     }
 });
+// let upload_files = []
+
+// function convertToDataURL(e) {
+//     return new Promise((resolve, reject) => {
+//         let files = e.target.files;
+//         let fileArr = Array.prototype.slice.call(files);
+
+//         fileArr.forEach((f) => {
+//             let reader = new FileReader();
+//             reader.onload = (e) => {
+//                 let dataURL = e.target.result;
+//                 upload_files.push(dataURL);
+//             };
+//             reader.readAsDataURL(f);
+//         })
+//         resolve(upload_files);
+//     })
+// }
+
+// async function doConvert(e) {
+//     await convertToDataURL(e);
+//     console.log('complete converting file to url');
+// }
 
 class UploadItem extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            text: '',
+            isClicked: false,
             files: []
         };
         this.handleChange = this.handleChange.bind(this);
-        this.readInputFile = this.readInputFile.bind(this);
+        this.handleItem = this.handleItem.bind(this);
+        //this.test = this.test.bind(this);
     }
+
+    // test(e) {
+    //     doConvert(e).then(() => {
+    //         console.log('done')
+    //         this.setState({
+    //             isClicked: true,
+    //             files: upload_files
+    //         }); // length 2
+    //     }).catch((err) => console.log(err));
+    // }
 
     handleChange(e) {
-        this.setState({
-            // Need to be fixed 
-            text: e.target.value,
-            files: Array.prototype.slice.call(e.target.files)
-        }, () => {console.log(this.state)})
-    }
-
-    handleItem() {
-        let text = this.state.text;
-
-        this.props.onUpload(text).then(
-            () => {
-                this.setState({
-                    text: ''
-                });
-            }
-        )
-
-    }
-
-    readInputFile(e) {
-        let upload_files = [];
-        $('#imagePreview').empty();
         let files = e.target.files;
         let fileArr = Array.prototype.slice.call(files);
-        let idx = 0;
-    
+        let upload_files = []
+
         fileArr.forEach((f) => {
-            upload_files.push(f);
             let reader = new FileReader();
             reader.onload = (e) => {
                 let dataURL = e.target.result;
-                let re = /^data:image\/(png|jpg);base64,/;
-                //console.log(e.target.result);
-                const html = `<div class="upload-display"><div class="upload-thumb-wrap"><a id=img_id_${idx} href="#"><img src=${dataURL} data-file=${f.name} /></a></div></div>`;
-                //console.log(dataURL);
-                $('#imagePreview').append(html);
-                idx ++;
+                upload_files.push(dataURL);
+                this.setState({
+                    isClicked: true,
+                    files: upload_files
+                })
             };
             reader.readAsDataURL(f);
         })
+    }
 
-        console.log(upload_files)
-
+    handleItem() {
+        let files = this.state.files;
+        this.props.onUpload(files).then((success) => {
+            if(!success) {
+                this.setState({
+                    isClicked: false,
+                    files: []
+                })
+            }
+        })
     }
 
     render() {
         const { classes } = this.props;
+        const chooseFileView = (
+            <div className="btn">
+                <span>찾아보기..</span>
+                <input id="real-input" type="file"
+                    onChange={this.handleChange} multiple />
+            </div>
+        );
+        const uploadTriggerView = (
+            <a className="waves-effect waves-light btn"
+                onClick={this.handleItem}>분류 시작</a>
+        );
         return (
             <div className= "row">
                 <div className="wrapper" id="upload-item">
                     <form className="col s12" method="post" action="upload">
                         <div className="file-field input-field"> 
-                            <div className="btn">
-                                <span>찾아보기..</span>
-                                <input id="real-input" type="file"
-                                    onChange={this.readInputFile} multiple />
-                            </div>
+                                { this.state.isClicked ? undefined : chooseFileView }
                             <div className="file-path-wrapper">
                                 <div id="imagePreview">
                                     <img id="img" />
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="card">
-                            <div className="card-content">
-                                <textarea className="materialize-textarea" 
-                                    placeholder="질문하기"
-                                    value={this.state.text}
-                                    onChange={this.handleChange}></textarea> 
-                            </div>
-                            <div className="card-action">
-                                <a onClick={this.handleItem}>질문등록</a>
-                            </div>
-                        </div> */}
                     </form>
-                    <div className="aa">
-                                <div id="imagePreview">
-                                    <img id="img" />
-                                </div>
-                            </div>
-                    {/* <Card className={classes.root}>
-                        <CardActionArea id="imthebest">
-                            {this.state.files.map((value, i) => {
-                                return (
-                                    <CardMedia
-                                        key={i}
-                                        component="img"
-                                        alt={value.name}
-                                        height="140"
-                                        image={value.name}
-                                        title="Contemplative Reptile"
-                                    />
-                                )
-                            })}
-                            
-                        </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                            분류하기
-                            </Button>
-                        </CardActions>
-                    </Card> */}
+                    <div>
+                        {this.state.files.map((value, i) => {
+                            return (
+                                <Card className={classes.root}>
+                                    <CardActionArea id="imthebest">
+                                        <CardMedia
+                                            key={i}
+                                            component="img"
+                                            alt={value}
+                                            height="140"
+                                            image={value}
+                                            title="Contemplative Reptile"
+                                        />
+                                    </CardActionArea>
+                                </Card>
+                            )
+                        })}
+                    </div>
+                    <div>
+                        { this.state.isClicked ? uploadTriggerView : undefined }
+                    </div>
                 </div>
             </div>
         );
@@ -139,11 +143,12 @@ class UploadItem extends Component {
 }
 
 UploadItem.propTypes = {
+    classes: PropTypes.object.isRequired,
     onUpload: PropTypes.func
 };
 
 UploadItem.defaultProps = {
-    onUpload: (text) => {console.error('upload function not defined');}
+    onUpload: (files) => {console.error('upload function not defined');}
 };
 
 export default withStyles(styles)(UploadItem);
