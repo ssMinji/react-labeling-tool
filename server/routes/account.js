@@ -75,7 +75,7 @@ router.post('/signin', (req, res) => {
                     bcrypt.compare(req.body.password, pw, (err, result) => {
                         if(err) throw err;
                         conn.query('SELECT * FROM user WHERE uid = ? AND password = ? AND flag = ?', [req.body.uid, pw, req.body.job],
-                            (err, result) => {
+                            (err, result, field) => {
                                 if (err) throw err;
                                 if (result.length === 0) {
                                     return res.status(401).json({
@@ -84,11 +84,12 @@ router.post('/signin', (req, res) => {
                                     });
                                 }
 
+                                let rows = JSON.parse(JSON.stringify(result[0]))
                                 let session = req.session;
-                                console.log('session is,', req.session);
+                                
                                 session.loginInfo = {
-                                    _id: result.id,
-                                    uid: result.uid
+                                    _id: rows.id,
+                                    uid: rows.uid
                                 }
 
                                 return res.json({
