@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import Sidebar from './Sidebar';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Drawer from '@material-ui/core/Drawer';
 
+const styles = theme => ({
+    list: {
+        width: 250,
+      },
+    fullList: {
+        width: 'auto',
+    },
+});
 
 class Header extends Component {
     constructor(props) {
@@ -10,21 +23,26 @@ class Header extends Component {
         this.state = {
             isExpanded: false
         };
-        this.handleClick = this.handleClick.bind(this);
+        this.toggleDrawer = this.toggleDrawer.bind(this);
     }
 
-    handleClick(e) {
+    toggleDrawer(e) {
+        if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
+            return;
+        }
+
         this.setState({ 
             isExpanded: !this.state.isExpanded
         });
+        console.log('done?');
     }
 
+
     render() {
+        const { classes } = this.props;
         const loginButton = (
             <li>
-                {/* <Link to="/login">
-                    <span>Login</span>
-                </Link> */}
+                {/* <span>로그인 후 이용가능합니다.</span> */}
             </li>
         );
 
@@ -36,22 +54,44 @@ class Header extends Component {
             </li>
         );
 
+        const list = (
+            <div
+              className={classes.list}
+              role="presentation"
+              onClick={this.toggleDrawer}
+              onKeyDown={this.toggleDrawer}
+            >
+              <List>
+                {['사진 업로드', '사진 분류'].map((text, index) => (
+                  <ListItem button key={text}>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+              <Divider />
+              <List>
+                {['사진 검증'].map((text, index) => (
+                  <ListItem button key={text}>
+                    <ListItemText primary={text} />
+                  </ListItem>
+                ))}
+              </List>
+            </div>
+        );
+
         
         return (
             <>
             <nav>
                 <div className="nav-wrapper orange light-1">
                     <Link to="/" className="brand-logo center">jeju</Link>
-                    
-
                     <ul>
                         <li>
-                            <a onClick={this.handleClick} data-target="slide-out" class="sidenav-trigger show-on-large">
+                            <a onClick={this.toggleDrawer} data-target="slide-out" class="sidenav-trigger show-on-large">
                                 <i className="material-icons">menu</i>
                             </a>
                         </li>
                     </ul>
-
                     <div className="right">
                         <ul>
                             { this.props.isLoggedIn ? logoutButton : loginButton}
@@ -59,13 +99,18 @@ class Header extends Component {
                     </div>
                 </div>
             </nav>
-            { this.state.isExpanded ? <Sidebar /> : undefined }
+            <div>
+                <Drawer anchor="menu" open={this.state.isExpanded} onClose={this.toggleDrawer}>
+                    {list}
+                </Drawer>
+            </div>
             </>
         );
     }
 }
 
 Header.propTypes = {
+    classes: PropTypes.object.isRequired,
     isLoggedIn: PropTypes.bool,
     onLogout: PropTypes.func
 };
@@ -75,4 +120,4 @@ Header.defaultProps = {
     onLogout: () => { console.error("logout function not defined"); }
 };
 
-export default Header;
+export default withStyles(styles)(Header);
