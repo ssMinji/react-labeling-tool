@@ -6,13 +6,13 @@ import {
 import axios from 'axios';
 
 /* LABEL ITEM */
-export function labelItemRequest(item) {
+export function labelItemRequest(item, username) {
     return (dispatch) => {
         dispatch(labelItem());
 
-        return axios.post('/api/label', { item })
+        return axios.get('/api/label')
             .then((response) => {
-                dispatch(labelSuccess());
+                dispatch(labelSuccess(response.data));
             }).catch((error) => {
                 dispatch(labelFailure(error.response.data.code));
             })
@@ -25,9 +25,10 @@ export function labelItem() {
     };
 }
 
-export function labelSuccess() {
+export function labelSuccess(data) {
     return {
-        type: LABEL_SUCCESS
+        type: LABEL_SUCCESS,
+        data
     };
 }
 
