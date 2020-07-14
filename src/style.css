@@ -91,3 +91,17 @@ img{
       border-top: 1px solid #E9E9E9;
       padding-bottom: 21px;
   }
+
+  .label {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, minmax(100px, auto));
+    row-gap: 10px;
+    column-gap: 20px;
+    /* align-content: space-around; */
+    /* align-items: center;  */
+    /* justify-content: space-between; */
+    /* flex-direction: row; */
+  }
+
+
