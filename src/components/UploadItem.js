@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router'; 
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -92,10 +93,15 @@ class UploadItem extends Component {
     render() {
         const { classes } = this.props;
         const chooseFileView = (
-            <div className="btn">
-                <span>찾아보기..</span>
-                <input id="real-input" type="file"
-                    onChange={this.handleChange} multiple />
+            <div>
+                <div className="btn">
+                    <span>찾아보기..</span>
+                    <input id="real-input" type="file"
+                        onChange={this.handleChange} multiple />
+                </div>
+                <Link to="/label">
+                    <a class="waves-effect waves-light btn-large center" href="#">분류 시작</a>
+                </Link>
             </div>
         );
         const uploadTriggerView = (
@@ -119,14 +125,14 @@ class UploadItem extends Component {
                         {this.state.files.map((value, i) => {
                             return (
                                 <Card className={classes.root}>
-                                    <CardActionArea id="imthebest">
+                                    <CardActionArea id="uploaded-item">
                                         <CardMedia
                                             key={i}
                                             component="img"
                                             alt={value}
                                             height="140"
                                             image={value}
-                                            title="Contemplative Reptile"
+                                            title="사진 업로드"
                                         />
                                     </CardActionArea>
                                 </Card>

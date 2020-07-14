@@ -15,7 +15,7 @@ class Upload extends Component {
             () => {
                 if(this.props.status === "SUCCESS") {
                     Materialize.toast("업로드 완료! 분류작업을 해주세요.", 2000);
-                    browserHistory.push('/login'); // TODO: /label 
+                    browserHistory.push('/label'); 
                 } else {
                     /*
                         ERROR CODES
