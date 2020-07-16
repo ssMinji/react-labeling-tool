@@ -15,7 +15,6 @@ import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Input from '@material-ui/core/Input';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Select from '@material-ui/core/Select';
 //import Link from '@material-ui/core/Link';
 import PropTypes from 'prop-types';
@@ -31,6 +30,10 @@ const styles = theme => ({
     form: {
       width: '100%', // Fix IE 11 issue.
       marginTop: theme.spacing(1),
+    },
+    formControl: {
+      marginTop: theme.spacing(2),
+      minWidth: 120,
     },
     submit: {
       margin: theme.spacing(3, 0, 2),
@@ -145,11 +148,11 @@ class SignUp extends Component {
                     onChange={this.handleChange}
                 />
                 <FormControl component="fieldset">
-                <FormLabel component="legend">구분</FormLabel>
-                <RadioGroup aria-label="job" name="job" value={this.state.job} onChange={this.handleChange}>
-                    <FormControlLabel value="farmer" control={<Radio />} label="농민" />
-                    <FormControlLabel value="expert" control={<Radio />} label="전문가" />
-                </RadioGroup>
+                    <FormLabel component="legend">구분</FormLabel>
+                    <RadioGroup aria-label="job" name="job" value={this.state.job} onChange={this.handleChange}>
+                        <FormControlLabel value="farmer" control={<Radio />} label="농민" />
+                        <FormControlLabel value="expert" control={<Radio />} label="전문가" />
+                    </RadioGroup>
                 </FormControl>
                 <TextField
                     id="dateOfBirth"

@@ -104,4 +104,12 @@ img{
     /* flex-direction: row; */
   }
 
+  .dialog {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, minmax(100px, auto));
+    row-gap: 10px;
+    column-gap: 20px;
+  }
+
 

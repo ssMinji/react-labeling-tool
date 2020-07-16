@@ -75,7 +75,7 @@ router.post('/signin', (req, res) => {
                     bcrypt.compare(req.body.password, pw, (err, result) => {
                         if(err) throw err;
                         conn.query('SELECT * FROM user WHERE uid = ? AND password = ? AND flag = ?', [req.body.uid, pw, req.body.job],
-                            (err, result, field) => {
+                            (err, result) => {
                                 if (err) throw err;
                                 if (result.length === 0) {
                                     return res.status(401).json({
