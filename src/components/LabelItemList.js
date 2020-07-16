@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { PropTypes } from 'prop-types';
+import PropTypes from 'prop-types';
 import { LabelItem } from 'components';
 
 class LabelItemList extends Component{
@@ -8,7 +8,7 @@ class LabelItemList extends Component{
             <div className="container label">
                     {this.props.data.map((item, i) => {
                         return (
-                            <LabelItem data={item} key={item.id} />
+                            <LabelItem data={item} key={item.id} currentUser={this.props.currentUser} currentJob={this.props.currentJob}/>
                         )
                     })}
             </div>
@@ -18,12 +18,14 @@ class LabelItemList extends Component{
 
 LabelItemList.propTypes = {
     data: PropTypes.array,
-    currentUser: PropTypes.string
+    currentUser: PropTypes.string,
+    currentJob: PropTypes.string
 }
 
 LabelItemList.defaultProps = {
     data: [],
-    currentUser: ''
+    currentUser: '',
+    currentJob: ''
 }
 
 export default LabelItemList;

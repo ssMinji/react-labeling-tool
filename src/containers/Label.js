@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import LabelItemList from 'components/LabelItemList';
-import { labelItemRequest } from 'actions/labelitem';
+import { getUploadedItemRequest } from 'actions/labelitem';
 import { connect } from 'react-redux';
 
 class Label extends Component {
 
     componentDidMount() {
-        this.props.labelItemRequest().then(
+        this.props.getUploadedItemRequest().then(
             () => {
+                //console.log('fetch success!', this.props.status)
                 //console.log(this.props.uploadData);
             }
         )
@@ -16,7 +17,7 @@ class Label extends Component {
     render() {
         return (
             <div>
-                <LabelItemList data={this.props.uploadData} currentUser={this.props.currentUser} />
+                <LabelItemList data={this.props.uploadData} currentUser={this.props.currentUser} currentJob={this.props.currentJob} />
             </div>
         )
     }
@@ -27,14 +28,16 @@ const mapStateToProps = (state) => {
     return {
         isLoggedIn: state.authentication.status.isLoggedIn,
         currentUser: state.authentication.status.currentUser,
-        uploadData: state.labelitem.item.data
+        currentJob: state.authentication.status.currentJob,
+        uploadData: state.labelitem.item.data,
+        status: state.labelitem.item.status
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        labelItemRequest: (item, username) => {
-            return dispatch(labelItemRequest(item, username));
+        getUploadedItemRequest: (item, username) => {
+            return dispatch(getUploadedItemRequest(item, username));
         }
     };
 };

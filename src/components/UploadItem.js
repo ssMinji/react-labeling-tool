@@ -8,8 +8,16 @@ import CardMedia from '@material-ui/core/CardMedia';
 
 const styles = theme => ({
     root: {
+        height: 300,
         maxWidth: 300,
-        maxHeight: 300
+        maxHeight: 300,
+        padding: '10px'
+    },
+    media: {
+        height: 180, 
+        //height: '100%',
+        width: '100%',
+        objectFit: 'cover'
     }
 });
 // let upload_files = []
@@ -127,6 +135,7 @@ class UploadItem extends Component {
                                 <Card className={classes.root}>
                                     <CardActionArea id="uploaded-item">
                                         <CardMedia
+                                            className={classes.media}
                                             key={i}
                                             component="img"
                                             alt={value}
