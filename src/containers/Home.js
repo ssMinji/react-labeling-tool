@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import Tangerine from '../../public/assets/tangerine_small.png';
 import { Upload } from 'containers';
 import { connect } from 'react-redux';
+import Verify from './Verify';
 
 class Home extends Component {
     constructor(props) {
@@ -24,7 +25,9 @@ class Home extends Component {
         return (
             <div className="container home">
                 <div className="wrapper">
-                    { this.props.isLoggedIn && this.props.currentJob == "farmer" ? <Upload /> : homeView}
+                    { this.props.isLoggedIn ?
+                        (this.props.currentJob == "farmer" ? <Upload /> : <Verify />)
+                        : homeView}
                 </div>
             </div>
         );
