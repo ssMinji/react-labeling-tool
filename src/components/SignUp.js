@@ -32,12 +32,17 @@ const styles = theme => ({
       marginTop: theme.spacing(1),
     },
     formControl: {
-      marginTop: theme.spacing(2),
+      marginTop: theme.spacing(1),
       minWidth: 120,
     },
     submit: {
-      margin: theme.spacing(3, 0, 2),
+      margin: theme.spacing(1, 0, 2),
     },
+    radioControl: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
   });
 
 class SignUp extends Component {
@@ -48,7 +53,7 @@ class SignUp extends Component {
             uid: "",
             password: "",
             username: "",
-            job: "",
+            job: "farmer",
             dateOfBirth: "",
             email: "",
             phoneNum: "",
@@ -148,11 +153,28 @@ class SignUp extends Component {
                     onChange={this.handleChange}
                 />
                 <FormControl component="fieldset">
-                    <FormLabel component="legend">구분</FormLabel>
-                    <RadioGroup aria-label="job" name="job" value={this.state.job} onChange={this.handleChange}>
+                    <RadioGroup className={classes.radioControl} aria-label="job" name="job" value={this.state.job} onChange={this.handleChange}>
                         <FormControlLabel value="farmer" control={<Radio />} label="농민" />
                         <FormControlLabel value="expert" control={<Radio />} label="전문가" />
                     </RadioGroup>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                    <InputLabel htmlFor="company-native-simple">소속</InputLabel>
+                    <Select
+                        className={classes.submit}
+                        native
+                        value={this.state.company}
+                        onChange={this.handleChange}
+                        inputProps={{
+                            name: 'company',
+                            id: 'company-native-simple',
+                        }}
+                    >
+                    <option aria-label="None" value="" />
+                    <option value="Jeju">제주도</option>
+                    <option value="Univ">제주대학교</option>
+                    <option value="Office">농업기술원</option>
+                    </Select>
                 </FormControl>
                 <TextField
                     id="dateOfBirth"
@@ -190,29 +212,9 @@ class SignUp extends Component {
                     autoComplete="current-phone"
                     onChange={this.handleChange}
                 />
-                <FormControl className={classes.formControl}>
-                    <InputLabel htmlFor="company-native-simple">소속</InputLabel>
-                    <Select
-                        native
-                        value={this.state.company}
-                        onChange={this.handleChange}
-                        inputProps={{
-                            name: 'company',
-                            id: 'company-native-simple',
-                        }}
-                    >
-                    <option aria-label="None" value="" />
-                    <option value="Jeju">제주도</option>
-                    <option value="Univ">제주대학교</option>
-                    <option value="Office">농업기술원</option>
-                    </Select>
-                </FormControl>
+                
                 <a className="waves-effect waves-light btn"
                         onClick={this.handleRegister}>회원가입하기</a>
-                <Grid container>
-                <Grid item>
-                </Grid>
-                </Grid>
             </form>
             </div>
         </Container>

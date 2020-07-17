@@ -30,8 +30,6 @@ router.post('/', (req, res) => {
     }
 
     let files = req.body.files;
-    //let d = new Date();
-    //let nowDate = d.getDate() + '/' + (d.getMonth()+1) + '/' + String(d.getFullYear()).slice(2);
 
     getConnection((conn) => {
         files.forEach((file) => {

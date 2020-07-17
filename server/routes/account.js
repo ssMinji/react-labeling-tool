@@ -91,6 +91,7 @@ router.post('/signin', (req, res) => {
                                     _id: rows.id,
                                     uid: rows.uid
                                 }
+                                console.log('req.session!!!', req.session.loginInfo)
 
                                 return res.json({
                                     success: true
