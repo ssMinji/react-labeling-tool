@@ -30,11 +30,9 @@ class Header extends Component {
         if (e.type === 'keydown' && (e.key === 'Tab' || e.key === 'Shift')) {
             return;
         }
-
         this.setState({ 
             isExpanded: !this.state.isExpanded
         });
-        console.log('done?');
     }
 
 
@@ -62,7 +60,7 @@ class Header extends Component {
               onKeyDown={this.toggleDrawer}
             >
               <List>
-                {['사진 업로드', '사진 분류'].map((text, index) => (
+                {['사진 업로드/분류'].map((text, index) => (
                   <ListItem button key={text}>
                     <ListItemText primary={text} />
                   </ListItem>
@@ -84,7 +82,7 @@ class Header extends Component {
             <>
             <nav>
                 <div className="nav-wrapper orange light-1">
-                    <Link to="/" className="brand-logo center">jeju</Link>
+                    <Link to="/" className="brand-logo center">JEJU</Link>
                     <ul>
                         <li>
                             <a onClick={this.toggleDrawer} data-target="slide-out" class="sidenav-trigger show-on-large">

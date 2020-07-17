@@ -13,7 +13,6 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
-//import Link from '@material-ui/core/Link';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 
@@ -31,10 +30,18 @@ const styles = theme => ({
   form: {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(3)
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  radioControl: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: theme.spacing(3)
+    
+  }
 });
 
 class SignIn extends Component {
@@ -84,8 +91,6 @@ class SignIn extends Component {
   }
 
   render() {
-    
-
     const { classes } = this.props;
     return (
       <Container component="main" maxWidth="xs">
@@ -119,27 +124,25 @@ class SignIn extends Component {
               autoComplete="current-password"
               onChange={this.handleChange}
             />
+            </form>
             <FormControl component="fieldset">
-              <FormLabel component="legend">구분</FormLabel>
-              <RadioGroup aria-label="job" name="job" value={this.state.job} onChange={this.handleChange}>
+              <RadioGroup className={classes.radioControl} aria-label="job" name="job" value={this.state.job} onChange={this.handleChange}>
                 <FormControlLabel value="farmer" control={<Radio />} label="농민" />
                 <FormControlLabel value="expert" control={<Radio />} label="전문가" />
               </RadioGroup>
             </FormControl>
             <a className="waves-effect waves-light btn"
-                        onClick={this.handleLogin}>로그인</a>
+                onClick={this.handleLogin}>
+                  로그인
+            </a>
             <Grid container>
               <Grid item>
               </Grid>
             </Grid>
-          </form>
         </div>
       </Container>
     );
   }
-  
-
-  
 }
 
 SignIn.propTypes = {

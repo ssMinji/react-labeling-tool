@@ -23,11 +23,11 @@ class Login extends Component {
 
                     document.cookie = 'key=' + btoa(JSON.stringify(loginData)); // 로그인 성공 시 세션데이터 쿠키에 저장 
 
-                    Materialize.toast('Welcome, ' + id + '!', 2000); // Materializecss 의 알림기능 
+                    Materialize.toast('환영합니다, ' + id + '님!', 2000); // Materializecss 의 알림기능 
                     browserHistory.push('/'); // 라우팅 트리거 
                     return true;
                 } else {
-                    let $toastContent = $('<span style="color: #FFB4BA">Incorrect id or password</span>');
+                    let $toastContent = $('<span style="color: #FFB4BA">아이디/비밀번호를 다시 확인해주세요</span>');
                     Materialize.toast($toastContent, 2000);
                     return false;
                 }

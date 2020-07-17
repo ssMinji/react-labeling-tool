@@ -61,7 +61,7 @@ class LabelDialog extends Component {
         });
         this.handleChange = this.handleChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleLabel = this.handleLabel.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleConfirm = this.handleConfirm.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
@@ -82,7 +82,7 @@ class LabelDialog extends Component {
         this.props.onHandleClose();
     }
 
-    handleLabel() {
+    handleSubmit() {
         this.props.onHandleClose();
         let files = {
             itemID: this.props.imageKey, 
@@ -135,7 +135,7 @@ class LabelDialog extends Component {
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={this.handleLabel} color="primary" autoFocus>
+                <Button onClick={this.handleSubmit} color="primary" autoFocus>
                     네
                 </Button>
                 <Button onClick={this.handleConfirm} color="primary">

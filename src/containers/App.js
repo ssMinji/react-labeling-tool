@@ -36,7 +36,6 @@ class App extends Component {
     // check whether this cookie is valid or not
     this.props.getStatusRequest().then(
       () => {
-        console.log(this.props.status);
         // if session is invalid
         if(!this.props.status.valid) {
           // logout the session

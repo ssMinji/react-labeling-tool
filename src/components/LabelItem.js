@@ -58,12 +58,7 @@ class LabelItem extends Component {
         const expertDialogView = (
             <VerifyDialog open={this.state.open} 
                         onHandleClose={this.handleClose}
-                        image={this.props.data.url}
-                        imageKey={this.props.data.id}
-                        category={this.props.data.category}
-                        label={this.props.data.label}
-                        comment={this.props.data.comment}
-                        farmerID={this.props.data.user_uid} />
+                        data={this.props.data} />
 
         );
 
