@@ -5,9 +5,7 @@ import {
     LABEL_ITEM,
     LABEL_ITEM_FAILURE,
     LABEL_ITEM_SUCCESS,
-    GET_LABELED_ITEM,
-    GET_LABELED_ITEM_SUCCESS,
-    GET_LABELED_ITEM_FAILURE
+
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -77,36 +75,4 @@ export function labelItemFailure(error) {
     };
 }
 
-/* GET LABELED ITEM */
-export function getLabeledItemRequest() {
-    return (dispatch) => {
-        dispatch(getLabeledItem());
 
-        return axios.get('/api/label/getLabel')
-            .then((response) => {
-                dispatch(getLabeledItemSuccess(response.data));
-            }).catch((error) => {
-                dispatch(getLabeledItemFailure(error.response.data.code));
-            })
-    }
-}
-
-export function getLabeledItem() {
-    return {
-        type: GET_LABELED_ITEM
-    };
-}
-
-export function getLabeledItemSuccess(data) {
-    return {
-        type: GET_LABELED_ITEM_SUCCESS,
-        data
-    };
-}
-
-export function getLabeledItemFailure(error) {
-    return {
-        type: GET_LABELED_ITEM_FAILURE,
-        error
-    };
-}

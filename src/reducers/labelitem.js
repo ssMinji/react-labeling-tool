@@ -11,12 +11,6 @@ const initialState = {
     label: {
         status: 'INIT',
         error: -1
-    },
-    verify: {
-        status: 'INIT',
-        data: [],
-        isLast: false,
-        error: -1,
     }
 }
 
@@ -60,27 +54,6 @@ export default function labelitem(state, action) {
         case types.LABEL_ITEM_FAILURE:
             return update(state, {
                 label: {
-                    status: { $set: 'FAILURE' },
-                    error: { $set: action.error }
-                }
-            });
-        case types.GET_LABELED_ITEM:
-            return update(state, {
-                verify: {
-                    status: { $set: 'WAITING' }
-                }
-            });
-        case types.GET_LABELED_ITEM_SUCCESS:
-            return update(state, {
-                verify: {
-                    status: { $set: 'SUCCESS' },
-                    data: { $set: action.data },
-                    isLast: { $set: action.data.length < 10 }
-                }
-            });
-        case types.GET_LABELED_ITEM_FAILURE:
-            return update(state, {
-                verify: {
                     status: { $set: 'FAILURE' },
                     error: { $set: action.error }
                 }
