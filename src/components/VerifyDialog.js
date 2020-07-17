@@ -18,8 +18,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormLabel from '@material-ui/core/FormLabel';
+import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
-import { labelItemRequest } from 'actions/labelitem';
+import { verifyItemRequest } from 'actions/verifyitem';
 
 const styles = theme => ({
     root: {
@@ -47,13 +48,46 @@ const styles = theme => ({
     },
 });
 
+Date.prototype.format = function (f) {
+    if (!this.valueOf()) return " ";
+
+    var weekKorName = ["일요일", "월요일", "화요일", "수요일", "목요일", "금요일", "토요일"];
+    var weekKorShortName = ["일", "월", "화", "수", "목", "금", "토"];
+    var weekEngName = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    var weekEngShortName = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    var d = this;
+
+    return f.replace(/(yyyy|yy|MM|dd|KS|KL|ES|EL|HH|hh|mm|ss|a\/p)/gi, function ($1) {
+        switch ($1) {
+            case "yyyy": return d.getFullYear(); // 년 (4자리)
+            case "yy": return (d.getFullYear() % 1000).zf(2); // 년 (2자리)
+            case "MM": return (d.getMonth() + 1).zf(2); // 월 (2자리)
+            case "dd": return d.getDate().zf(2); // 일 (2자리)
+            case "KS": return weekKorShortName[d.getDay()]; // 요일 (짧은 한글)
+            case "KL": return weekKorName[d.getDay()]; // 요일 (긴 한글)
+            case "ES": return weekEngShortName[d.getDay()]; // 요일 (짧은 영어)
+            case "EL": return weekEngName[d.getDay()]; // 요일 (긴 영어)
+            case "HH": return d.getHours().zf(2); // 시간 (24시간 기준, 2자리)
+            case "hh": return ((h = d.getHours() % 12) ? h : 12).zf(2); // 시간 (12시간 기준, 2자리)
+            case "mm": return d.getMinutes().zf(2); // 분 (2자리)
+            case "ss": return d.getSeconds().zf(2); // 초 (2자리)
+            case "a/p": return d.getHours() < 12 ? "오전" : "오후"; // 오전/오후 구분
+            default: return $1;
+        }
+    });
+};
+
+String.prototype.string = function (len) { var s = '', i = 0; while (i++ < len) { s += this; } return s; };
+String.prototype.zf = function (len) { return "0".string(len - this.length) + this; };
+Number.prototype.zf = function (len) { return this.toString().zf(len); };
+
 class VerifyDialog extends Component {
 
     constructor(props) {
         super(props);
         this.state = ({
-            category: '',
-            label: '',
+            category: this.props.data.category,
+            label: this.props.data.label,
             comment: '',
             confirmOpen: false,
             cancelOpen: false,
@@ -61,7 +95,7 @@ class VerifyDialog extends Component {
         });
         this.handleChange = this.handleChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleLabel = this.handleLabel.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
         this.handleConfirm = this.handleConfirm.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
@@ -70,7 +104,7 @@ class VerifyDialog extends Component {
         let nextState = {};
         nextState[e.target.name] = e.target.value;
         this.setState(nextState, () => {
-            if (this.state.category.length !== 0 && this.state.label.length !== 0) {
+            if (this.state.label.length !== 0) {
                 this.setState({
                     disabled: false
                 })
@@ -82,27 +116,25 @@ class VerifyDialog extends Component {
         this.props.onHandleClose();
     }
 
-    handleLabel() {
+    handleSubmit() {
         this.props.onHandleClose();
         let files = {
-            itemID: this.props.imageKey, 
-            category: this.state.category, 
+            itemID: this.props.data.id, 
             label: this.state.label, 
-            comment: this.state.comment
+            comment: this.state.comment,
+            uploader_uid: this.props.data.user_uid
         };
-        this.props.labelItemRequest(files).then(
+        this.props.verifyItemRequest(files).then(
             () => {
-                Materialize.toast("분류 완료!", 2000);
-                console.log(this.props.status)
-                //location.reload();
-                
-                // if(this.props.status === "SUCCESS") {
+                if(this.props.status === "SUCCESS") {
+                    Materialize.toast("분류 완료!", 2000);
+                    location.reload();
                     
-                // } else {
-                //     let $toastContent;
-                //     $toastContent = $('<span style="color: #FFB4BA">' + '작업 실패!' + '</span>');
-                //     Materialize.toast($toastContent, 2000);
-                // }
+                } else {
+                    let $toastContent;
+                    $toastContent = $('<span style="color: #FFB4BA">' + '작업 실패!' + '</span>');
+                    Materialize.toast($toastContent, 2000);
+                }
             }
         )
     }
@@ -120,8 +152,9 @@ class VerifyDialog extends Component {
     }
     
     render() {
-        const { classes, open, image, imageKey } = this.props;
-        console.log(this.props);
+        const { classes, open, data} = this.props;
+        let date = new Date(data.date);
+        
 
         const confirmView = (
             <Dialog
@@ -136,7 +169,7 @@ class VerifyDialog extends Component {
                 </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                <Button onClick={this.handleLabel} color="primary" autoFocus>
+                <Button onClick={this.handleSubmit} color="primary" autoFocus>
                     네
                 </Button>
                 <Button onClick={this.handleConfirm} color="primary">
@@ -183,16 +216,27 @@ class VerifyDialog extends Component {
                             <CardActionArea id="label-image">
                                 <CardMedia
                                     className={classes.media}
-                                    key={imageKey}
+                                    key={data.id}
                                     component="img"
                                     alt='label-img'
                                     height="140"
-                                    image={image}
+                                    image={data.url}
                                     title='업로드한 이미지'
                                 />
                             </CardActionArea>
                         </Card>
-                        <FormControl className={classes.formControl}>
+                        <DialogContent>
+                            <Typography gutterBottom>
+                                등록 아이디: {data.user_uid}
+                            </Typography>
+                            <Typography gutterBottom>
+                                등록 일자: {date.format('yyyy-MM-dd(KS) HH:mm:ss')}
+                            </Typography>
+                            <Typography gutterBottom>
+                                등록 질문: {data.comment}
+                            </Typography>
+                        </DialogContent>
+                        <FormControl className={classes.formControl} disabled>
                             <InputLabel htmlFor="category-native-simple">부위</InputLabel>
                             <Select
                                 native
@@ -231,7 +275,7 @@ class VerifyDialog extends Component {
                             margin = "dense"
                             id="comment"
                             name="comment"
-                            label="질문을 입력해주세요"
+                            label="답변을 입력해주세요"
                             fullWidth
                         />
                     </DialogContent>  
@@ -256,36 +300,26 @@ VerifyDialog.propTypes = {
     classes: PropTypes.object.isRequired,
     open: PropTypes.bool,
     onHandleClose: PropTypes.func,
-    image: PropTypes.string,
-    imageKey: PropTypes.number,
-    category: PropTypes.string,
-    label: PropTypes.string,
-    comment: PropTypes.string,
-    farmerID: PropTypes.string
+    data: PropTypes.object
 }
 
 VerifyDialog.defaultProps = {
     open: false,
     onHandleClose: (e) => {console.error('handleClose function not defined')},
-    image: '',
-    imageKey: 0,
-    category: '',
-    label: '',
-    comment: '',
-    farmerID: ''
+    data: {}
 }
 
 const mapStateToProps = (state) => {
     return {
-        status: state.labelitem.label.status,
-        errorCode: state.labelitem.label.error
+        status: state.verifyitem.verify.status,
+        errorCode: state.verifyitem.verify.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        labelItemRequest: (files) => {
-            return dispatch(labelItemRequest(files));
+        verifyItemRequest: (files) => {
+            return dispatch(verifyItemRequest(files));
         }
     }
 }

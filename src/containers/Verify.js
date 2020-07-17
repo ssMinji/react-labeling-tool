@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import LabelItemList from 'components/LabelItemList';
-import { getLabeledItemRequest } from 'actions/labelitem';
+import { getLabeledItemRequest } from 'actions/verifyitem';
 import { connect } from 'react-redux';
 
 
@@ -10,7 +10,7 @@ class Verify extends Component {
         this.props.getLabeledItemRequest().then(
             () => {
                 //console.log('fetch success!', this.props.status)
-                console.log('fetch labelData!!',this.props.labelData);
+                //console.log('fetch labelData!!',this.props.labelData);
             }
         )
     }
@@ -30,8 +30,8 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.authentication.status.isLoggedIn,
         currentUser: state.authentication.status.currentUser,
         currentJob: state.authentication.status.currentJob,
-        labelData: state.labelitem.verify.data,
-        status: state.labelitem.verify.status
+        labelData: state.verifyitem.item.data,
+        status: state.verifyitem.item.status
     }
 }
 
