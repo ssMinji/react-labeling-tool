@@ -15,34 +15,30 @@ const styles = theme => ({
     },
     media: {
         height: 180, 
-        //height: '100%',
         width: '100%',
         objectFit: 'cover'
     }
 });
-// let upload_files = []
 
-// function convertToDataURL(e) {
-//     return new Promise((resolve, reject) => {
-//         let files = e.target.files;
-//         let fileArr = Array.prototype.slice.call(files);
+function convertToDataURL(file) {
+    return new Promise((resolve, reject) => {
+        let reader = new FileReader();
+        reader.onload = (e) => {
+            let dataURL = e.target.result;
+            resolve(dataURL)
+        };
+        reader.readAsDataURL(file);
+    })
+}
 
-//         fileArr.forEach((f) => {
-//             let reader = new FileReader();
-//             reader.onload = (e) => {
-//                 let dataURL = e.target.result;
-//                 upload_files.push(dataURL);
-//             };
-//             reader.readAsDataURL(f);
-//         })
-//         resolve(upload_files);
-//     })
-// }
-
-// async function doConvert(e) {
-//     await convertToDataURL(e);
-//     console.log('complete converting file to url');
-// }
+async function doConvert(fileArr) {
+    const data = await Promise.all(
+        fileArr.map(file => {
+            return convertToDataURL(file);
+        })
+    );
+    return data;
+}
 
 class UploadItem extends Component {
 
@@ -54,35 +50,19 @@ class UploadItem extends Component {
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleItem = this.handleItem.bind(this);
-        //this.test = this.test.bind(this);
     }
-
-    // test(e) {
-    //     doConvert(e).then(() => {
-    //         console.log('done')
-    //         this.setState({
-    //             isClicked: true,
-    //             files: upload_files
-    //         }); // length 2
-    //     }).catch((err) => console.log(err));
-    // }
 
     handleChange(e) {
         let files = e.target.files;
         let fileArr = Array.prototype.slice.call(files);
-        let upload_files = []
+        this.setState({
+            isClicked: true
+        })
 
-        fileArr.forEach((f) => {
-            let reader = new FileReader();
-            reader.onload = (e) => {
-                let dataURL = e.target.result;
-                upload_files.push(dataURL);
-                this.setState({
-                    isClicked: true,
-                    files: upload_files
-                })
-            };
-            reader.readAsDataURL(f);
+        doConvert(fileArr).then((data) => {
+            this.setState({
+                files: data
+            })
         })
     }
 
