@@ -12,6 +12,7 @@ export default function uploaditem(state, action) {
     if(typeof state === "undefined") state = initialState;
 
     switch(action.type) {
+        // UPLOAD ITEM
         case types.UPLOAD_ITEM:
             return update(state, {
                 item: {

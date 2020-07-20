@@ -13,15 +13,12 @@ import {
 import axios from 'axios';
 
 /* LOGIN */
-export function loginRequest(uid, password, job) { // thunk return. 나중에 컴포넌트에서 dispatch(loginRequest(username, password))
+export function loginRequest(uid, password, job) { 
     return (dispatch) => {
-        // Inform Login API is starting
         dispatch(login());
 
-        // API REQUEST
         return axios.post('/api/account/signin', { uid, password, job })
             .then((response) => {
-                //SUCCEED
                 dispatch(loginSuccess(uid, job));
             }).catch((error) => {
                 console.log('error occurred!!!!!!!');
@@ -55,8 +52,8 @@ export function loginFailure() {
 /* REGISTER */
 export function registerRequest(uid, pw, username, job, dateOfBirth, email, phoneNum, company) {
     return (dispatch) => {
-        // Inform Register API is starting 
         dispatch(register());
+
         return axios.post('/api/account/signup', { uid, pw, username, job, dateOfBirth, email, phoneNum, company })
             .then((response) => {
                 dispatch(registerSuccess());
@@ -89,12 +86,11 @@ export function registerFailure(error) {
 /* GET STATUS */
 export function getStatusRequest() {
     return (dispatch) => {
-        // Inform Get Status API is starting
         dispatch(getStatus());
 
         return axios.get('/api/account/getInfo')
             .then((response) => {
-                dispatch(getStatusSuccess(response.data.info.uid));
+                dispatch(getStatusSuccess(response.data.info.uid, response.data.info.currentJob));
             }).catch((error) => {
                 dispatch(getStatusFailure());
             });
@@ -107,10 +103,11 @@ export function getStatus() {
     };
 }
 
-export function getStatusSuccess(uid) {
+export function getStatusSuccess(uid, job) {
     return {
         type: AUTH_GET_STATUS_SUCCESS,
-        uid
+        uid,
+        job
     };
 }
 
@@ -123,6 +120,7 @@ export function getStatusFailure() {
 /* LOGOUT */
 export function logoutRequest() {
     return (dispatch) => {
+        
         return axios.post('/api/account/logout')
             .then((response) => {
                 dispatch(logout());

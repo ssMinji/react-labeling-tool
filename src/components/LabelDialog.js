@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -92,19 +93,18 @@ class LabelDialog extends Component {
         };
         this.props.labelItemRequest(files).then(
             () => {
-                Materialize.toast("분류 완료!", 2000);
-                console.log(this.props.status)
-                //location.reload();
-                
-                // if(this.props.status === "SUCCESS") {
-                    
-                // } else {
-                //     let $toastContent;
-                //     $toastContent = $('<span style="color: #FFB4BA">' + '작업 실패!' + '</span>');
-                //     Materialize.toast($toastContent, 2000);
-                // }
+                console.log('labelItemRequest', this.props.status)
+                if(this.props.status === "SUCCESS") {
+                    Materialize.toast("분류 완료!", 2000);
+                    console.log('status after label', this.props.status)
+                    //location.reload();
+                } else {
+                    let $toastContent;
+                    $toastContent = $('<span style="color: #FFB4BA">작업 실패!</span>');
+                    Materialize.toast($toastContent, 2000);
+                }
             }
-        )
+        );
     }
 
     handleConfirm() {
@@ -269,7 +269,7 @@ LabelDialog.defaultProps = {
 const mapStateToProps = (state) => {
     return {
         status: state.labelitem.label.status,
-        errorCode: state.labelitem.label.error
+        errorCode: state.labelitem.label.error,
     }
 }
 

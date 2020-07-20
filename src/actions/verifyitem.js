@@ -42,6 +42,7 @@ export function getLabeledItemFailure(error) {
     };
 }
 
+/* DO VERIFY ITEM */
 export function verifyItemRequest(files) {
     return (dispatch) => {
         dispatch(verifyItem());

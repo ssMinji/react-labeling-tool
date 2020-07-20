@@ -18,6 +18,7 @@ export default function verifyitem(state, action) {
     if(typeof state == "undefined") state = initialState;
 
     switch(action.type) {
+        // GET LABELED ITEM
         case types.GET_LABELED_ITEM:
             return update(state, {
                 item: {
@@ -39,6 +40,7 @@ export default function verifyitem(state, action) {
                     error: { $set: action.error }
                 }
             });
+        // VERIFY ITEM
         case types.VERIFY_ITEM:
             return update(state, {
                 verify: {

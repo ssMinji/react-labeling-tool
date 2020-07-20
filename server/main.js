@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import path from 'path';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
@@ -17,7 +16,7 @@ export const getConnection = (callback) => {
     pool.getConnection((err, conn) => {
         if(err) throw err;
         else callback(conn);
-        console.log('SQL DATABASE IS CONNECTED!!!!');
+        console.log('SQL DATABASE IS CONNECTED');
     
     });
 }
@@ -25,11 +24,6 @@ export const getConnection = (callback) => {
 const app = express();
 const port = 3001;
 const devPort = 4000;
-
-// const corsOptions = {
-//     origin: 'https://localhost:3000',
-//     credentials: true, // 설정 내용 response 헤더에 추가 
-// }
 
 app.use(session({
     secret: 'abrain$1234',
@@ -42,7 +36,6 @@ app.use(bodyParser.json({
     limit: '50mb'
 }));
 app.use('/api', api);
-//app.use(cors(corsOptions));
 
 app.use('/', express.static(path.join(__dirname, './../public')));
 
@@ -68,7 +61,7 @@ if(process.env.NODE_ENV == 'development') {
     const devServer = new WebpackDevServer(compiler, config.devServer);
     devServer.listen(
         devPort, () => {
-            console.log('webpack-dev-server is listening on port!!!!!!!!!!!!!!!', devPort);
+            console.log('webpack-dev-server is listening on port', devPort);
         }
     )
 }

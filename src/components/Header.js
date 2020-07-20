@@ -38,11 +38,6 @@ class Header extends Component {
 
     render() {
         const { classes } = this.props;
-        const loginButton = (
-            <li>
-                {/* <span>로그인 후 이용가능합니다.</span> */}
-            </li>
-        );
 
         const logoutButton = (
             <li>
@@ -92,7 +87,7 @@ class Header extends Component {
                     </ul>
                     <div className="right">
                         <ul>
-                            { this.props.isLoggedIn ? logoutButton : loginButton}
+                            { this.props.isLoggedIn ? logoutButton : undefined}
                         </ul>
                     </div>
                 </div>

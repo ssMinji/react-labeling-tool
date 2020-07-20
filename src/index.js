@@ -11,7 +11,7 @@ import { App, Home, Login, Register, Upload, Label } from 'containers';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import reducers from 'reducers';
-import thunk from 'redux-thunk'; // dispatcher가 action createor가 만든 action 객체 외에도, 만든 함수도 처리가능
+import thunk from 'redux-thunk'; 
 
 
 import * as serviceWorker from './serviceWorker';

@@ -3,9 +3,8 @@ import {
     GET_UPLOADED_ITEM_SUCCESS,
     GET_UPLOADED_ITEM_FAILURE,
     LABEL_ITEM,
-    LABEL_ITEM_FAILURE,
     LABEL_ITEM_SUCCESS,
-
+    LABEL_ITEM_FAILURE
 } from './ActionTypes';
 import axios from 'axios';
 
@@ -16,7 +15,7 @@ export function getUploadedItemRequest() {
 
         return axios.get('/api/label')
             .then((response) => {
-                dispatch(getUploadedItemSuccess(response));
+                dispatch(getUploadedItemSuccess(response.data));
             }).catch((error) => {
                 dispatch(getUploadedItemFailure(error.response.data.code));
             })
@@ -43,12 +42,14 @@ export function getUploadedItemFailure(error) {
     };
 }
 
+/* DO LABEL */
 export function labelItemRequest(files) {
     return (dispatch) => {
         dispatch(labelItem());
 
         return axios.post('/api/label/doLabel', { files })
             .then((response) => {
+                console.log('successly done?', response.data)
                 dispatch(labelItemSuccess());
             }).catch((error) => {
                 dispatch(labelItemFailure(error.response.data.code));
@@ -64,7 +65,7 @@ export function labelItem() {
 
 export function labelItemSuccess() {
     return {
-        type: LABEL_ITEM_SUCCESS
+        type: LABEL_ITEM_SUCCESS,
     };
 }
 

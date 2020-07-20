@@ -1,8 +1,6 @@
 #upload-item{
   height: 100vh;
   display: flex;
-  /* align-items: center; 페이지 중앙 정렬 */
-  /* justify-content: space-around; */
   flex-direction: column;
 }
 
@@ -13,6 +11,7 @@ section{
   justify-content: center;
   flex-direction: column;
 }
+
 /* Home */
 .home .btn-large {
   text-align: center;;
@@ -101,10 +100,6 @@ img{
     grid-template-rows: repeat(3, minmax(100px, auto));
     row-gap: 10px;
     column-gap: 20px;
-    /* align-content: space-around; */
-    /* align-items: center;  */
-    /* justify-content: space-between; */
-    /* flex-direction: row; */
   }
 
   .dialog {

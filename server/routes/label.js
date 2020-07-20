@@ -5,8 +5,8 @@ import { resolve } from 'path';
 const router = express.Router();
 
 /*
-    FARMER SIDE
-    GET /api/label
+    ***********FARMER SIDE************
+    GET UPLOADED FILES: GET /api/label
 */
 router.get('/', (req, res) => {
     getConnection((conn) => {
@@ -19,6 +19,9 @@ router.get('/', (req, res) => {
     });
 });
 
+/*
+    LABEL: POST /api/label/doLabel
+ */
 router.post('/doLabel', (req, res) => {
     let categoryCode;
     let labelCode;
@@ -37,8 +40,6 @@ router.post('/doLabel', (req, res) => {
                         let rows = JSON.parse(JSON.stringify(result[0]));
                         labelCode = rows.value;
 
-                        //console.log('result !!!', categoryCode, 2, labelCode, comment, itemID);
-
                         conn.query('UPDATE item SET category = ?, status = ?, label = ?, comment = ? WHERE (id = ?)', [categoryCode, 2, labelCode, comment, itemID],
                             (err, result) => {
                                 if (err) throw err;
@@ -51,10 +52,9 @@ router.post('/doLabel', (req, res) => {
 });
 
 /*
-    EXPERT SIDE
-    GET /api/getLabel
+    ***********EXPERT SIDE************
+    GET LABELED FILES: GET /api/label/getLabel
 */
-
 async function getNameByCode(result, conn) {
     return new Promise((resolve, reject) => {
         let data = JSON.parse(JSON.stringify(result));
@@ -101,16 +101,13 @@ router.get('/getLabel', (req, res) => {
                     res.json(data);
                 })
             })
-
         conn.release();
     })
-   
 });
 
 
 /* 
-    DO VERIFY
-    POST /api/label/doVerify
+    LABEL VERIFY: POST /api/label/doVerify
 */
 router.post('/doVerify', (req, res) => {
     let files = req.body.files; // itemID, label, comment

@@ -1,9 +1,9 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { Header } from 'components';
 import { connect } from 'react-redux';
 import { getStatusRequest, logoutRequest } from 'actions/authentication'; 
 import { browserHistory } from 'react-router';
-//import './App.css';
 
 class App extends Component {
 
@@ -41,7 +41,8 @@ class App extends Component {
           // logout the session
           loginData = {
             isLoggedIn: false,
-            id: ''
+            uid: '',
+            currentJob: ''
           };
 
           document.cookie = 'key=' + btoa(JSON.stringify(loginData));
@@ -53,20 +54,18 @@ class App extends Component {
       }
     );
 
-    // let sidenav = document.querySelector('#slide-out');
-    // Sidenave.init(sidenav, {});
-
   }
 
   handleLogout() {
     this.props.logoutRequest().then(
       () => {
-        Materialize.toast('Good Bye! ', 2000);
+        Materialize.toast('안녕히가세요! ', 2000);
 
         // EMPTY SESSION
         let loginData = {
           isLoggedIn: false,
-          uid: ''
+          uid: '',
+          currentJob: ''
         };
         
         document.cookie = 'key= ' + btoa(JSON.stringify(loginData));
@@ -76,8 +75,6 @@ class App extends Component {
   }
   
   render() {
-    let re = /(login|register)/; // check whether current route is login or register using regex 
-    let isAuth = re.test(this.props.location.pathname);
 
     return (
       <div>

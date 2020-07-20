@@ -20,7 +20,6 @@ class Home extends Component {
                 </Link>
             </section>
         );
-        
 
         return (
             <div className="container home">

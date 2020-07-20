@@ -6,12 +6,7 @@ import { connect } from 'react-redux';
 class Label extends Component {
 
     componentDidMount() {
-        this.props.getUploadedItemRequest().then(
-            () => {
-                //console.log('fetch success!', this.props.status)
-                //console.log(this.props.uploadData);
-            }
-        )
+        this.props.getUploadedItemRequest()
     }
 
     render() {
@@ -21,7 +16,6 @@ class Label extends Component {
             </div>
         )
     }
-
 }
 
 const mapStateToProps = (state) => {
@@ -36,8 +30,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getUploadedItemRequest: (item, username) => {
-            return dispatch(getUploadedItemRequest(item, username));
+        getUploadedItemRequest: () => {
+            return dispatch(getUploadedItemRequest());
         }
     };
 };

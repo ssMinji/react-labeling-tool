@@ -4,9 +4,9 @@ import { getConnection } from '../main';
 const router = express.Router();
 
 /* 
-    POST /api/upload
+    UPLOAD FILES: POST /api/upload
     ERROR CODES
-        1: NOT LOGGED IN
+        1: LOGIN STATUS INVALID
         2: EMPTY FILES
 */
 
@@ -14,7 +14,7 @@ router.post('/', (req, res) => {
     // CHECK LOGIN STATUS
     if(typeof req.session.loginInfo === 'undefined') {
         return res.status(403).json({
-            error: "NOT LOGGED IN",
+            error: "LOGIN STATUS INVALID",
             code: 1
         });
     }

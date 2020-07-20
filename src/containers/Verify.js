@@ -7,12 +7,7 @@ import { connect } from 'react-redux';
 class Verify extends Component {
 
     componentDidMount() {
-        this.props.getLabeledItemRequest().then(
-            () => {
-                //console.log('fetch success!', this.props.status)
-                //console.log('fetch labelData!!',this.props.labelData);
-            }
-        )
+        this.props.getLabeledItemRequest()
     }
 
     render() {

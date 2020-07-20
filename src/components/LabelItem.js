@@ -18,7 +18,6 @@ const styles = theme => ({
     },
     media: {
         height: 180,
-        //height: '100%',
         width: '100%',
         objectFit: 'cover'
     }

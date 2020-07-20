@@ -1,3 +1,6 @@
+/* eslint-disable no-extend-native */
+/* eslint-disable no-restricted-globals */
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
@@ -124,8 +127,9 @@ class VerifyDialog extends Component {
             comment: this.state.comment,
             uploader_uid: this.props.data.user_uid
         };
-        this.props.verifyItemRequest(files).then(
+        return this.props.verifyItemRequest(files).then(
             () => {
+                console.log('status after verify!', this.props.status)
                 if(this.props.status === "SUCCESS") {
                     Materialize.toast("분류 완료!", 2000);
                     location.reload();

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import {SignIn} from 'components';
 import { connect } from 'react-redux';
@@ -20,11 +21,10 @@ class Login extends Component {
                         isLoggedIn: true,
                         id: id
                     };
+                    document.cookie = 'key=' + btoa(JSON.stringify(loginData)); // save session data in cookie 
 
-                    document.cookie = 'key=' + btoa(JSON.stringify(loginData)); // 로그인 성공 시 세션데이터 쿠키에 저장 
-
-                    Materialize.toast('환영합니다, ' + id + '님!', 2000); // Materializecss 의 알림기능 
-                    browserHistory.push('/'); // 라우팅 트리거 
+                    Materialize.toast('환영합니다, ' + id + '님!', 2000); 
+                    browserHistory.push('/'); 
                     return true;
                 } else {
                     let $toastContent = $('<span style="color: #FFB4BA">아이디/비밀번호를 다시 확인해주세요</span>');

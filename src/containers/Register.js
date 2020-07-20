@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { SignUp } from 'components';
 import { connect } from 'react-redux';
@@ -26,9 +27,9 @@ class Register  extends Component {
                             3. USERNAME ALREADY EXIST
                     */
                    let errorMessage = [
-                       'Invalid Username',
-                       'Password is too short',
-                       'Username already exists'
+                       '올바르지 않은 아이디입니다.',
+                       '올바르지 않은 비밀번호입니다.',
+                       '이미 존재하는 아이디입니다.'
                    ];
                    let $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[this.props.errorCode - 1] + '</span>');
                    Materialize.toast($toastContent, 2000);

@@ -1,24 +1,15 @@
 import React, { Component } from 'react';
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
 import InputLabel from '@material-ui/core/InputLabel';
-import Input from '@material-ui/core/Input';
 import Select from '@material-ui/core/Select';
-//import Link from '@material-ui/core/Link';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 
 const styles = theme => ({
     paper: {
@@ -28,7 +19,7 @@ const styles = theme => ({
       alignItems: 'center',
     },
     form: {
-      width: '100%', // Fix IE 11 issue.
+      width: '100%', 
       marginTop: theme.spacing(1),
     },
     formControl: {
@@ -71,6 +62,7 @@ class SignUp extends Component {
     }
 
     handleRegister() {
+    
         let uid = this.state.uid;
         let pw = this.state.password;
         let username = this.state.username;
@@ -109,8 +101,8 @@ class SignUp extends Component {
     }
 
     render() {
-
         const { classes } = this.props;
+        
         return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
@@ -220,7 +212,6 @@ class SignUp extends Component {
         </Container>
         );
     }
-
 }
 
 SignUp.propTypes = {

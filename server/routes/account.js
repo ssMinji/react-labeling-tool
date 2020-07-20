@@ -1,16 +1,15 @@
 import express from 'express';
 import { getConnection } from '../main';
-import { get } from 'http';
-//import bcrypt from 'bcrpytjs';
 
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+
 /*
     ACCOUNT SIGNUP: POST /api/account/signup
     ERROR CODES:
-        1: BAD USERNAME
-        2: BAD PASSWORD
-        3: USERNAME ALREADY EXIST
+        1. BAD USERNAME
+        2. TOO SHORT PASSWORD
+        3. USERNAME ALREADY EXIST
 */
 router.post('/signup', (req, res) => {
 
@@ -18,16 +17,15 @@ router.post('/signup', (req, res) => {
 
     if(!idRegex.test(req.body.uid)) {
         return res.status(400).json({
-            error: "BAD USERNAME!!!",
+            error: "BAD USERNAME",
             code: 1
         });
     }
-    console.log(req.body);
 
     // CHECK PW LENGTH
     if(req.body.pw.length < 4 || typeof req.body.pw !== "string") {
         return res.status(400).json({
-            error: "BAD PW!!!",
+            error: "TOO SHORT PASSWORD",
             code: 2
         });
     }
@@ -38,7 +36,7 @@ router.post('/signup', (req, res) => {
                 if (err) throw err;
                 if (result.length !== 0) {
                     return res.status(400).json({
-                        error: "USER EXIST",
+                        error: "USERNAME ALREADY EXIST",
                         code: 3
                     });
                 } 
@@ -56,8 +54,6 @@ router.post('/signup', (req, res) => {
         
         conn.release();
     });
-
-    
 });
 
 /* 
@@ -89,7 +85,8 @@ router.post('/signin', (req, res) => {
                                 
                                 session.loginInfo = {
                                     _id: rows.id,
-                                    uid: rows.uid
+                                    uid: rows.uid,
+                                    currentJob: rows.flag
                                 }
                                 console.log('req.session!!!', req.session.loginInfo)
 
@@ -106,16 +103,21 @@ router.post('/signin', (req, res) => {
     }
 });
 
+/* 
+    SESSION CHECK: GET /api/account/getinfo
+*/
 router.get('/getinfo', (req, res) => {
     if (typeof req.session.loginInfo === "undefined") {
         return res.status(401).json({
             error: 1
         });
     }
-
     res.json({ info: req.session.loginInfo });
 });
 
+/* 
+    ACCOUNT LOGOUT: POST /api/account/logout
+*/
 router.post('/logout', (req, res) => {
     req.session.destroy(err => { if(err) throw err; });
     return res.json({ success: true });

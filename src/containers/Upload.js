@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { uploadItemRequest } from 'actions/uploaditem';
 import { connect } from 'react-redux';
@@ -19,12 +20,12 @@ class Upload extends Component {
                 } else {
                     /*
                         ERROR CODES
-                            1: NOT LOGGED IN
-                            2: EMPTY FILES
+                            1: 로그인 후 이용해주세요
+                            2: 파일을 선택해주세요 
                     */
                    let errorMessage = [
-                       '로그인 후 이용해주세요!',
-                       '파일을 선택해주세요!'
+                       '로그인 후 이용해주세요',
+                       '파일을 선택해주세요'
                    ]
                    let $toastContent;
                    switch(this.props.errorCode){
@@ -37,7 +38,8 @@ class Upload extends Component {
                             $toastContent = $('<span style="color: #FFB4BA">' + errorMessage[1] + '</span>');
                             Materialize.toast($toastContent, 2000);
                             break;
-
+                        default:
+                            return;
                    } 
                 }
             }

@@ -10,7 +10,8 @@ const initialState = {
     },
     label: {
         status: 'INIT',
-        error: -1
+        error: -1,
+        returnCode: false
     }
 }
 
@@ -18,6 +19,7 @@ export default function labelitem(state, action) {
     if(typeof state == "undefined") state = initialState;
 
     switch(action.type) {
+        // GET UPLOADED ITEM
         case types.GET_UPLOADED_ITEM:
             return update(state, {
                 item: {
@@ -39,6 +41,7 @@ export default function labelitem(state, action) {
                     error: { $set: action.error }
                 }
             });
+        // DO LABEL ITEM
         case types.LABEL_ITEM:
             return update(state, {
                 label: {
@@ -48,7 +51,8 @@ export default function labelitem(state, action) {
         case types.LABEL_ITEM_SUCCESS:
             return update(state, {
                 label: {
-                    status: { $set: 'SUCCESS' }
+                    status: { $set: 'SUCCESS' },
+                    returnCode: { $set: action.data }
                 }
             });
         case types.LABEL_ITEM_FAILURE:

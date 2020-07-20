@@ -6,7 +6,7 @@ import {
 import axios from 'axios';
 
 
-/* UPLOAD ITEM */
+/* DO UPLOAD ITEM */
 export function uploadItemRequest(files) {
     return (dispatch) => {
         dispatch(uploadItem());

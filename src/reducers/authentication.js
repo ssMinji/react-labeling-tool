@@ -45,6 +45,7 @@ export default function authentication(state, action) {
                     status: { $set: 'FAILURE' }
                 }
             });
+        // REGISTER
         case types.AUTH_REGISTER:
             return update(state, {
                 register: {
@@ -65,6 +66,7 @@ export default function authentication(state, action) {
                     error: { $set: action.error }
                 }
             });
+        // GET STATUS
         case types.AUTH_GET_STATUS: // 쿠키에 세션이 저장된 상태에서, 새로고침했을 때만 실행됨 
             return update(state, {
                 status: {
@@ -75,7 +77,8 @@ export default function authentication(state, action) {
             return update(state, {
                 status: {
                     valid: { $set: true },
-                    currentUser: { $set: action.uid }
+                    currentUser: { $set: action.uid },
+                    currentJob: { $set: action.job}
                 }
             });
         case types.AUTH_GET_STATUS_FAILURE:
@@ -85,6 +88,7 @@ export default function authentication(state, action) {
                     isLoggedin: { $set: false }
                 }
             });
+        // LOGOUT
         case types.AUTH_LOGOUT:
             return update(state, {
                 status: {
