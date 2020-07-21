@@ -11,6 +11,13 @@ class Upload extends Component {
         this.handleItem = this.handleItem.bind(this);
     }
 
+    componentDidMount() {
+        if(this.props.currentUser.length === 0) {
+            Materialize.toast("로그인 후 이용해주세요", 2000);
+            browserHistory.push('/login'); 
+        }
+    }
+
     handleItem(file) {
         return this.props.uploadItemRequest(file).then(
             () => {
@@ -59,6 +66,7 @@ class Upload extends Component {
 
 const mapStateToProps = (state) => {
     return {
+        currentUser: state.authentication.status.currentUser,
         status: state.uploaditem.item.status,
         errorCode: state.uploaditem.item.error
     };
