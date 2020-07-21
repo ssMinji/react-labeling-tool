@@ -54,7 +54,7 @@ app.listen(port, () => {
     console.log('Express is listenging on port', port);
 });
 
-if(process.env.NODE_ENV == 'development') {
+if(process.env.NODE_ENV === 'development') {
     console.log('Server is running on development mode');
     const config = require('../webpack.dev.config');
     const compiler = webpack(config);

@@ -1,6 +1,5 @@
-import express, { response } from 'express';
+import express from 'express';
 import { getConnection } from '../main';
-import { resolve } from 'path';
 
 const router = express.Router();
 
@@ -20,7 +19,7 @@ router.get('/', (req, res) => {
 });
 
 /*
-    LABEL: POST /api/label/doLabel
+    DO LABEL: POST /api/label/doLabel
  */
 router.post('/doLabel', (req, res) => {
     let categoryCode;
@@ -52,15 +51,12 @@ router.post('/doLabel', (req, res) => {
 });
 
 /*
-    ***********EXPERT SIDE************
     GET LABELED FILES: GET /api/label/getLabel
 */
 async function getNameByCode(result, conn) {
     return new Promise((resolve, reject) => {
         let data = JSON.parse(JSON.stringify(result));
-        let query = 'SELECT name FROM common_code \
-                    WHERE value = ? \
-                    AND pid = (SELECT id FROM common_code WHERE name=?)'
+        let query = 'SELECT name FROM common_code WHERE value = ? AND pid = (SELECT id FROM common_code WHERE name=?)'
         conn.query(query, [data.category, 'CATEGORY'], 
             (err, results) => {
                 if (err) throw err;
@@ -107,6 +103,7 @@ router.get('/getLabel', (req, res) => {
 
 
 /* 
+    ***********EXPERT SIDE***************
     LABEL VERIFY: POST /api/label/doVerify
 */
 router.post('/doVerify', (req, res) => {
@@ -129,6 +126,74 @@ router.post('/doVerify', (req, res) => {
                         if(err) throw err;
                         return res.status(200).json({ success: true });
                     })
+            })
+        conn.release();
+    })
+});
+
+/* 
+    ***********FOR EVERYONE************
+    GET VERIFIED ITEM: GET /api/label/getVerified
+*/
+async function getNameByCodeVerified(result, conn) {
+    return new Promise((resolve, reject) => {
+        let data = JSON.parse(JSON.stringify(result));
+        let query = 'SELECT name FROM common_code WHERE value = ? AND pid = (SELECT id FROM common_code WHERE name=?)'
+        conn.query(query, [data.category, 'CATEGORY'], 
+            (err, results) => {
+                if (err) throw err;
+                let rows = JSON.parse(JSON.stringify(results[0]));
+                let categoryName = rows.name;
+
+                conn.query(query, [data.upload_label, 'LABEL'], 
+                    (err, results) => {
+                        if (err) throw err;
+                        let rows = JSON.parse(JSON.stringify(results[0]));
+                        let uploadLabelName = rows.name;
+
+                        conn.query(query, [data.review_label, 'LABEL'],
+                            (err, results) => {
+                                if(err) throw err;
+                                let rows = JSON.parse(JSON.stringify(results[0]));
+                                let reviewLabelName = rows.name;
+
+                                data['category'] = categoryName;
+                                data['upload_label'] = uploadLabelName;
+                                data['review_label'] = reviewLabelName;
+                                resolve(data);
+                            })
+                        
+                        
+                    });
+            })
+    });
+}
+
+async function getResultVerified(results, conn) {
+    const data = await Promise.all(
+        results.map(result => {
+            return getNameByCodeVerified(result, conn);
+        })
+    );
+    return data;
+}
+
+router.get('/getVerified', (req, res) => {
+    getConnection((conn) => {
+        let query = "SELECT i.id as upload_id, url, category, i.date as upload_date, i.label as upload_label,\n" +
+                            "i.comment as upload_comment, i.user_uid as upload_uid, r.comment as review_comment,\n" +
+                            "r.date as review_date, r.label as review_label, reviewer_uid \n" +
+                    "FROM jeju.item AS i\n" +
+                    "JOIN\n" +
+                    "(SELECT * FROM jeju.review WHERE item_id IN (SELECT id FROM jeju.item WHERE status=3)) AS r\n" +
+                    "ON i.id = r.item_id;";
+        conn.query(query, 
+            (err, results) => {
+                if(err) throw err;
+                
+                getResultVerified(results, conn).then((data) => {
+                    res.json(data);
+                })
             })
         conn.release();
     })
