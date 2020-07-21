@@ -4,8 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## About
 
-- Farmer: Upload/Label tangerine images. They can choose label of desease themselves and they can ask question as a comment
-- Expert: Verify tangerine images which are uploaded by farmer. They can label the images and leave answer for questions
+- 농민: 감귤 이미지를 업로드/1차 분류한다. 부위, 질병을 선택해야하며, 질문을 등록할 수 있다. 
+- 전문가: 농민이 업로드한 이미지를 2차 분류(검증)한다. 등록된 질문에 답변을 할 수 있다. 
 
 ## Features
 
@@ -13,6 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Upload
 - Label
 - Verify
+- Verified
 
 ## Prerequisites
 
@@ -31,3 +32,15 @@ npm install
 
 Express server runs on port 3001, and development server runs on port 4000.
 
+## Possible ERROR 
+
+```Shell
+ERROR: MySQL 8.0 - Client does not support authentication protocol requested by server; consider upgrading MySQL client
+```
+
+DO BELOW COMMEND IN MYSQL SERVER
+
+```SQL
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
+flush privileges;
+```
