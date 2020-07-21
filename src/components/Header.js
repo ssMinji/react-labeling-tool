@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -55,18 +56,20 @@ class Header extends Component {
               onKeyDown={this.toggleDrawer}
             >
               <List>
-                {['사진 업로드/분류'].map((text, index) => (
-                  <ListItem button key={text}>
-                    <ListItemText primary={text} />
-                  </ListItem>
-                ))}
+                  <Link to="/upload">
+                    <ListItem button key="사진 업로드">
+                        <ListItemText primary="사진 업로드" />
+                    </ListItem>
+                  </Link>
               </List>
               <Divider />
               <List>
-                {['사진 검증'].map((text, index) => (
+                {['검증 완료'].map((text, index) => (
+                <Link to="/verified">
                   <ListItem button key={text}>
                     <ListItemText primary={text} />
                   </ListItem>
+                </Link>
                 ))}
               </List>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -91,7 +92,7 @@ class SignUp extends Component {
     }
 
     handleKeyPress (e) {
-        if(e.charCode==13) {
+        if(e.charCode===13) {
             if(this.props.mode) {
                 this.handleLogin();
             } else {

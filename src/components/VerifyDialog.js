@@ -1,3 +1,4 @@
+/* eslint-disable no-cond-assign */
 /* eslint-disable no-extend-native */
 /* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
@@ -129,16 +130,8 @@ class VerifyDialog extends Component {
         };
         return this.props.verifyItemRequest(files).then(
             () => {
-                console.log('status after verify!', this.props.status)
-                if(this.props.status === "SUCCESS") {
-                    Materialize.toast("분류 완료!", 2000);
-                    location.reload();
-                    
-                } else {
-                    let $toastContent;
-                    $toastContent = $('<span style="color: #FFB4BA">' + '작업 실패!' + '</span>');
-                    Materialize.toast($toastContent, 2000);
-                }
+                Materialize.toast("분류 완료!", 2000);
+                location.reload();
             }
         )
     }

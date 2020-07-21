@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import Tangerine from '../../public/assets/tangerine_small.png';
@@ -6,10 +8,6 @@ import { connect } from 'react-redux';
 import Verify from './Verify';
 
 class Home extends Component {
-    constructor(props) {
-        super(props);
-        
-    }
 
     render() {
         const homeView = (
@@ -25,7 +23,7 @@ class Home extends Component {
             <div className="container home">
                 <div className="wrapper">
                     { this.props.isLoggedIn ?
-                        (this.props.currentJob == "farmer" ? <Upload /> : <Verify />)
+                        (this.props.currentJob === "farmer" ? <Upload /> : <Verify />)
                         : homeView}
                 </div>
             </div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -77,7 +78,7 @@ class SignIn extends Component {
   }
 
   handleKeyPress(e) {
-    if(e.charCode==13) {
+    if(e.charCode===13) {
         if(this.props.mode) {
             this.handleLogin();
         } else {

@@ -21,8 +21,8 @@ router.post('/', (req, res) => {
 
     let userID = req.session.loginInfo.uid;
 
-    // CHECK CONTENTS VALID1
-    if(typeof req.body.files.length === 0) {
+    // CHECK FILES VALID
+    if(req.body.files.length === 0) {
         return res.status(400).json({
             error: "EMPTY FILES",
             code: 2

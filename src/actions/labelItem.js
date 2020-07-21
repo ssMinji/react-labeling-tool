@@ -49,7 +49,6 @@ export function labelItemRequest(files) {
 
         return axios.post('/api/label/doLabel', { files })
             .then((response) => {
-                console.log('successly done?', response.data)
                 dispatch(labelItemSuccess());
             }).catch((error) => {
                 dispatch(labelItemFailure(error.response.data.code));
@@ -65,7 +64,7 @@ export function labelItem() {
 
 export function labelItemSuccess() {
     return {
-        type: LABEL_ITEM_SUCCESS,
+        type: LABEL_ITEM_SUCCESS
     };
 }
 

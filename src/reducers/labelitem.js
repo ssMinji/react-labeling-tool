@@ -11,7 +11,6 @@ const initialState = {
     label: {
         status: 'INIT',
         error: -1,
-        returnCode: false
     }
 }
 
@@ -52,7 +51,6 @@ export default function labelitem(state, action) {
             return update(state, {
                 label: {
                     status: { $set: 'SUCCESS' },
-                    returnCode: { $set: action.data }
                 }
             });
         case types.LABEL_ITEM_FAILURE:

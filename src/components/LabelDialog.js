@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
@@ -60,6 +61,7 @@ class LabelDialog extends Component {
             cancelOpen: false,
             disabled: true
         });
+        console.log(this.props);
         this.handleChange = this.handleChange.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -93,16 +95,8 @@ class LabelDialog extends Component {
         };
         this.props.labelItemRequest(files).then(
             () => {
-                console.log('labelItemRequest', this.props.status)
-                if(this.props.status === "SUCCESS") {
-                    Materialize.toast("분류 완료!", 2000);
-                    console.log('status after label', this.props.status)
-                    //location.reload();
-                } else {
-                    let $toastContent;
-                    $toastContent = $('<span style="color: #FFB4BA">작업 실패!</span>');
-                    Materialize.toast($toastContent, 2000);
-                }
+                Materialize.toast("분류 완료!", 2000);
+                location.reload();
             }
         );
     }
