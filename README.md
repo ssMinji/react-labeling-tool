@@ -1,4 +1,3 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 # JEJU 감귤병해충 방제 서비스
 
@@ -9,11 +8,11 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Features
 
-- Authentication(Login/ Register/ Logout)
-- Upload
-- Label
-- Verify
-- Verified
+- Authentication: Login/ Register/ Logout
+- Upload: 농민 업로드
+- Label: 농민 분류
+- Verify: 전문가 분류(검증)
+- Verified: 검증 완료 이미지 리스트
 
 ## Prerequisites
 
@@ -38,7 +37,7 @@ Express server runs on port 3001, and development server runs on port 4000.
 ERROR: MySQL 8.0 - Client does not support authentication protocol requested by server; consider upgrading MySQL client
 ```
 
-DO BELOW COMMEND IN MYSQL SERVER
+EXEC BELOW COMMEND IN MYSQL SERVER
 
 ```SQL
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'your_password';
